@@ -17,7 +17,7 @@ The investigation started with a web attack alert in the SIEM:
 - **Source IP:** 144.172.79.92
 - **Target:** 172.16.17.139/global-protect/login.esp
 - **Alert Trigger Reason:** Characteristics exploit pattern Detected on Cookie and Request, indicative exploitation of the CVE-2024-3400.`
-- **Attack Vector:** Command Injection (`./../../../`)
+- **Attack Vector:** Command Injection (`SESSID=./../../../opt/panlogs/tmp/device_telemetry/hour/aaa`)
 
 ### 2. **Web Log & Endpoint Analysis**
 Using **Firewall logs**, I identified:
@@ -35,8 +35,8 @@ Using **Firewall logs**, I identified:
 
 ### 3. **Threat Intelligence & Attack Mapping**
 - **Checked malicious IP and hash image reputation** using **Virus Total**
-- **Researched exploitation activity & reports ** using **https://unit42.paloaltonetworks.com/cve-2024-3400/**
-- **Mapped attacker behavior** to **MITRE ATT&CK framework**
+- **Researched exploitation activity & reports** using **https://unit42.paloaltonetworks.com/cve-2024-3400/** and **https://www.volexity.com/blog/2024/04/12/zero-day-exploitation-of-unauthenticated-remote-code-execution-vulnerability-in-globalprotect-cve-2024-3400/**
+- **Mapped attacker behavior** to **MITRE ATT&CK framework** using **Virus Total** behaviour of image hash
 
   <img width="851" alt="image" src="https://github.com/user-attachments/assets/affca3ac-71cb-4f7f-8859-847d575d256e" />
   <img width="844" alt="image" src="https://github.com/user-attachments/assets/5eaadf10-94ad-4acb-8988-03bbaa2c6a54" />
@@ -46,8 +46,8 @@ Using **Firewall logs**, I identified:
 ### 4. **Findings & MITRE ATT&CK Mapping**
 | **Indicator**       | **Threat Source** | **MITRE ATT&CK TTP** |
 |--------------------|-----------------|------------------|
-| `' OR 1=1 --` (SQLi) | Web Logs Analysis | T1190 - Exploit Public-Facing App |
-| `203.0.113.45` (Attacker IP) | AbuseIPDB: Malicious | T1071 - C2 Communication |
+| `SESSID=./../../../opt/panlogs/tmp/device_telemetry/hour/aaa` (Command Injection) | Web Logs Analysis | TA0002 - privilege escalation |
+| `144.172.79.92` (Attacker IP) | VirusTotal: Malicious | T1071 - C2 Communication |
 | `XSS Payload in URL` | Web Logs & Analysis | T1059.007 - JavaScript Execution |
 
 ## 🚀 Remediation & Lessons Learned
@@ -77,7 +77,7 @@ Using **Firewall logs**, I identified:
 ## 📈 References
 - [Let’sDefend SOC Platform](https://letsdefend.io/)
 - [MITRE ATT&CK Framework](https://attack.mitre.org/)
-- [Burp Suite](https://portswigger.net/burp)
+- [PaloAlto/Unit42](https://unit42.paloaltonetworks.com/cve-2024-3400/)
 
 ---
 
